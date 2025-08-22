@@ -1,103 +1,154 @@
-import Image from "next/image";
+'use client';
 
-export default function Home() {
+import Hero from '@/components/sections/Hero';
+import CategoryGrid from '@/components/category/CategoryGrid';
+import { useCategories } from '@/hooks/useCategories';
+import { 
+  FlaskRound, 
+  Factory, 
+  Construction, 
+  Home as HomeIcon, 
+  ShieldAlert,
+  Microscope,
+  LucideIcon
+} from 'lucide-react';
+
+// Интерфейс для категорий (должен соответствовать интерфейсу в CategoryGrid)
+interface Category {
+  id: number;
+  title: string;
+  description: string;
+  icon: LucideIcon;
+  href: string;
+  gradient: string;
+  count: string;
+}
+
+const defaultCategories: Category[] = [
+  {
+    id: 1,
+    title: 'Лабораторная химия',
+    description: 'Реактивы, растворители и оборудование для научных исследований',
+    icon: FlaskRound,
+    href: '/catalog/laboratory',
+    gradient: 'from-blue-500 to-cyan-500',
+    count: '2,400+ продуктов'
+  },
+  {
+    id: 2,
+    title: 'Промышленная химия',
+    description: 'Сырье и материалы для производственных процессов',
+    icon: Factory,
+    href: '/catalog/industrial',
+    gradient: 'from-purple-500 to-pink-500',
+    count: '15,000+ продуктов'
+  },
+  {
+    id: 3,
+    title: 'Строительная химия',
+    description: 'Специализированные составы для строительной отрасли',
+    icon: Construction,
+    href: '/catalog/construction',
+    gradient: 'from-orange-500 to-red-500',
+    count: '8,700+ продуктов'
+  },
+  {
+    id: 4,
+    title: 'Бытовая химия',
+    description: 'Продукты для дома и повседневного использования',
+    icon: HomeIcon,
+    href: '/catalog/household',
+    gradient: 'from-green-500 to-emerald-500',
+    count: '12,000+ продуктов'
+  },
+  {
+    id: 5,
+    title: 'Подконтрольные вещества',
+    description: 'Специальные категории с соблюдением всех требований',
+    icon: ShieldAlert,
+    href: '/catalog/controlled',
+    gradient: 'from-red-500 to-rose-500',
+    count: '900+ продуктов'
+  },
+  {
+    id: 6,
+    title: 'Лабораторное оборудование',
+    description: 'Техника и приборы для современных лабораторий',
+    icon: Microscope,
+    href: '/catalog/equipment',
+    gradient: 'from-indigo-500 to-blue-500',
+    count: '5,300+ продуктов'
+  }
+];
+
+export default function HomePage() {
+  const { categories, loading, error } = useCategories();
+
+  // Преобразуем категории из API к нужному формату
+  const transformedCategories = categories?.map((apiCategory: any) => ({
+    id: apiCategory.id,
+    title: apiCategory.name || apiCategory.title,
+    description: apiCategory.description,
+    icon: getIconComponent(apiCategory.iconName),
+    href: `/catalog/${apiCategory.slug}`,
+    gradient: getGradient(apiCategory.type),
+    count: `${apiCategory.productCount || 0}+ продуктов`
+  })) || [];
+
+  // Используем преобразованные категории из API или дефолтные
+  const displayCategories = transformedCategories.length > 0 ? transformedCategories : defaultCategories;
+
   return (
-    <div className="font-sans grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20">
-      <main className="flex flex-col gap-[32px] row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="font-mono list-inside list-decimal text-sm/6 text-center sm:text-left">
-          <li className="mb-2 tracking-[-.01em]">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] font-mono font-semibold px-1 py-0.5 rounded">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li className="tracking-[-.01em]">
-            Save and see your changes instantly.
-          </li>
-        </ol>
+    <main className="min-h-screen bg-gradient-to-br from-blue-50 to-indigo-100">
+      <Hero />
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:w-auto"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent font-medium text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 w-full sm:w-auto md:w-[158px]"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
+      <section className="container mx-auto px-4 py-12">
+        <div className="text-center mb-12">
+          <h2 className="text-3xl font-bold text-gray-800 mb-4">
+            Категории продуктов
+          </h2>
+          <p className="text-gray-600 max-w-2xl mx-auto">
+            Найдите всё необходимое для вашей лаборатории, производства или бытовых нужд
+          </p>
         </div>
-      </main>
-      <footer className="row-start-3 flex gap-[24px] flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
+
+        {loading && <div className="text-center text-gray-500">Загрузка...</div>}
+        {error && (
+          <div className="text-center text-red-600">
+            Ошибка загрузки данных. Показаны стандартные категории.
+          </div>
+        )}
+        <CategoryGrid categories={displayCategories} />
+      </section>
+
+      {/* Здесь будут другие секции: FeaturedProducts, Suppliers, Testimonials, etc. */}
+    </main>
   );
+}
+
+// Вспомогательные функции для преобразования данных из API
+function getIconComponent(iconName: string): LucideIcon {
+  const iconMap: Record<string, LucideIcon> = {
+    'flask-round': FlaskRound,
+    'factory': Factory,
+    'construction': Construction,
+    'home': HomeIcon,
+    'shield-alert': ShieldAlert,
+    'microscope': Microscope,
+  };
+  
+  return iconMap[iconName] || FlaskRound;
+}
+
+function getGradient(type: string): string {
+  const gradientMap: Record<string, string> = {
+    'laboratory': 'from-blue-500 to-cyan-500',
+    'industrial': 'from-purple-500 to-pink-500',
+    'construction': 'from-orange-500 to-red-500',
+    'household': 'from-green-500 to-emerald-500',
+    'controlled': 'from-red-500 to-rose-500',
+    'equipment': 'from-indigo-500 to-blue-500',
+  };
+  
+  return gradientMap[type] || 'from-gray-500 to-gray-700';
 }
