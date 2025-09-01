@@ -4,7 +4,6 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 type Quality = "high" | "low";
-
 type UIState = {
   introDone: boolean;
   qualityMode: Quality;
@@ -20,6 +19,10 @@ export const useUI = create<UIState>()(
       setIntroDone: (v) => set({ introDone: v }),
       setQuality: (q) => set({ qualityMode: q }),
     }),
-    { name: "chem-ui" }
+    {
+      name: "chem-ui-v2",
+      // сохраняем ТОЛЬКО качество, introDone не пишем в localStorage
+      partialize: (s) => ({ qualityMode: s.qualityMode }),
+    }
   )
 );
