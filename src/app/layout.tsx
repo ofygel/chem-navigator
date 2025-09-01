@@ -1,27 +1,33 @@
-import type { Metadata } from 'next';
-import { Inter } from 'next/font/google';
-import './globals.css';
-import Header from '@/components/layout/Header';
-import Footer from '@/components/layout/Footer';
+import type { Metadata } from "next";
+import { Geist, Geist_Mono } from "next/font/google";
+import "./globals.css";
 
-const inter = Inter({ subsets: ['latin'] });
+const geistSans = Geist({
+  variable: "--font-geist-sans",
+  subsets: ["latin"],
+});
+
+const geistMono = Geist_Mono({
+  variable: "--font-geist-mono",
+  subsets: ["latin"],
+});
 
 export const metadata: Metadata = {
-  title: 'СНЕМ-NAVIGATOR - Навигатор химических продуктов',
-  description: 'Маркетплейс химических товаров и продуктов',
+  title: "Chem-Navigator — Навигатор химических продуктов",
+  description: "Интерактивный 3D-опыт для химического маркетплейса.",
 };
 
 export default function RootLayout({
   children,
-}: {
+}: Readonly<{
   children: React.ReactNode;
-}) {
+}>) {
   return (
     <html lang="ru">
-      <body className={inter.className}>
-        <Header />
+      <body
+        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+      >
         {children}
-        <Footer />
       </body>
     </html>
   );
