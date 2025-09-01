@@ -1,27 +1,32 @@
 // src/components/category/CategoryCard.tsx
+"use client";
 import Image from "next/image";
-import Link from "next/link";
 import { cn } from "@/lib/utils";
+import { useUI } from "@/store/ui";
 
 type Props = {
   title: string;
   desc?: string;
-  href: string;
-  image?: string; // путь из /public
+  slug: string;     // вместо href
+  image?: string;
   className?: string;
 };
 
-export default function CategoryCard({ title, desc, href, image, className }: Props) {
+export default function CategoryCard({ title, desc, slug, image, className }: Props) {
+  const { openCategory, setHoverCategory } = useUI();
+
   return (
-    <Link
-      href={href}
+    <button
+      type="button"
+      onClick={() => openCategory(slug)}
+      onMouseEnter={() => setHoverCategory(slug)}
+      onMouseLeave={() => setHoverCategory(null)}
       className={cn(
-        "group relative block overflow-hidden rounded-2xl border border-white/10 bg-black/30",
+        "group relative block overflow-hidden rounded-2xl border border-white/10 bg-black/30 text-left",
         "holo-halo transition-colors hover:bg-black/40",
         className
       )}
     >
-      {/* фон */}
       {image ? (
         <Image
           src={image}
@@ -34,13 +39,9 @@ export default function CategoryCard({ title, desc, href, image, className }: Pr
       ) : (
         <div className="absolute inset-0 bg-gradient-to-br from-brand.blue/15 via-brand.cyan/10 to-transparent" />
       )}
-
-      {/* затемнение для читабельности */}
       <div className="absolute inset-0 bg-gradient-to-t from-black/55 via-black/15 to-transparent" />
-
-      {/* контент */}
       <div className="relative z-10 flex h-full flex-col justify-end p-5">
-        <div className="text-xl font-semibold tracking-wide drop-shadow-[0_1px_6px_rgba(0,0,0,0.6)]">
+        <div className="text-xl font-semibold drop-shadow-[0_1px_6px_rgba(0,0,0,0.6)]">
           {title}
         </div>
         {desc ? (
@@ -52,9 +53,7 @@ export default function CategoryCard({ title, desc, href, image, className }: Pr
           Открыть →
         </div>
       </div>
-
-      {/* скан-линии + лёгкая виньетка */}
       <div className="holo-scan holo-vignette absolute inset-0"></div>
-    </Link>
+    </button>
   );
 }
