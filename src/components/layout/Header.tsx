@@ -1,4 +1,3 @@
-// src/components/layout/Header.tsx
 "use client";
 
 import Link from "next/link";
@@ -12,7 +11,6 @@ export default function Header() {
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-black/40 backdrop-blur">
       <div className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between px-4">
-        {/* Лого */}
         <Link href="/" className="group inline-flex items-center gap-2">
           <span className="inline-block h-3 w-3 rounded-full bg-brand.cyan/80 shadow-[0_0_16px_rgba(6,231,231,0.45)]" />
           <span className="text-sm font-semibold tracking-wide text-white/90 group-hover:text-white">
@@ -20,9 +18,7 @@ export default function Header() {
           </span>
         </Link>
 
-        {/* Действия */}
         <div className="flex items-center gap-2">
-          {/* RU/KZ */}
           <div className="flex overflow-hidden rounded-xl border border-white/15">
             <button
               onClick={() => setLocale("ru")}

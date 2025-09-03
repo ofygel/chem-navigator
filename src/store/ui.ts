@@ -1,4 +1,3 @@
-// src/store/ui.ts
 "use client";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
@@ -17,6 +16,8 @@ export type CartItem = {
 
 type UIState = {
   qualityMode: Quality;
+  setQualityMode: (q: Quality) => void;
+
   locale: "ru" | "kk";
   setLocale: (l: "ru" | "kk") => void;
 
@@ -32,11 +33,9 @@ type UIState = {
   openProduct: (id: string) => void;
   closeProduct: () => void;
 
-  // hover для связи с 3D
   hoverCategory: string | null;
   setHoverCategory: (slug: string | null) => void;
 
-  // корзина
   cart: CartItem[];
   addToCart: (item: Omit<CartItem, "qty">, qty?: number) => void;
   removeFromCart: (id: string, seller: string) => void;
@@ -48,6 +47,7 @@ export const useUI = create<UIState>()(
   persist(
     (set, get) => ({
       qualityMode: "high",
+      setQualityMode: (q) => set({ qualityMode: q }),
 
       locale: "ru",
       setLocale: (l) => set({ locale: l }),
@@ -80,7 +80,7 @@ export const useUI = create<UIState>()(
       },
       removeFromCart: (id, seller) => set({ cart: get().cart.filter(c => !(c.id === id && c.seller === seller)) }),
       setQty: (id, seller, qty) => {
-        const copy = get().cart.map(c => c.id === id && c.seller === seller ? { ...c, qty } : c);
+        const copy = get().cart.map(c => (c.id === id && c.seller === seller ? { ...c, qty } : c));
         set({ cart: copy });
       },
       clearCart: () => set({ cart: [] }),

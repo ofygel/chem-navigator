@@ -1,4 +1,3 @@
-// src/components/common/SearchBar.tsx
 "use client";
 import { useEffect, useMemo, useState } from "react";
 import { Input } from "@/components/ui/input";
@@ -29,7 +28,7 @@ export default function SearchBar() {
   return (
     <div className="relative mx-auto w-full max-w-3xl">
       <div className="pointer-events-none absolute -inset-x-10 -top-6 h-[140%] rounded-[3rem] bg-[radial-gradient(ellipse_at_center,rgba(6,231,231,0.18),transparent_60%)] blur-2xl" />
-      <div className="relative z-10 mx-auto flex items-center gap-2 rounded-2xl border border-white/10 bg-black/30 p-2 shadow-glass backdrop-blur">
+      <div className="relative z-10 mx-auto flex items-center gap-3 rounded-2xl border border-white/10 bg-black/30 p-2 shadow-glass backdrop-blur">
         <Search className="h-5 w-5 text-white/60" />
         <Popover open={open} onOpenChange={setOpen}>
           <PopoverTrigger asChild>
@@ -46,11 +45,7 @@ export default function SearchBar() {
                 <CommandEmpty>Ничего не найдено</CommandEmpty>
                 <CommandGroup heading="Товары">
                   {results.map(r => (
-                    <CommandItem
-                      key={r.id}
-                      value={r.title}
-                      onSelect={() => { setOpen(false); setQ(""); openProduct(r.id); }}
-                    >
+                    <CommandItem key={r.id} value={r.title} onSelect={() => { setOpen(false); setQ(""); openProduct(r.id); }}>
                       <span className="truncate">{r.title}</span>
                       {r.cas && <span className="ml-2 text-xs text-white/60">CAS {r.cas}</span>}
                     </CommandItem>
@@ -60,10 +55,7 @@ export default function SearchBar() {
             </Command>
           </PopoverContent>
         </Popover>
-        <Button
-          className="rounded-xl bg-brand.cyan/20 text-brand.cyan hover:bg-brand.cyan/30"
-          onClick={() => results[0] && openProduct(results[0].id)}
-        >
+        <Button className="rounded-xl bg-brand.cyan/20 text-brand.cyan hover:bg-brand.cyan/30" onClick={() => results[0] && openProduct(results[0].id)}>
           Найти
         </Button>
       </div>

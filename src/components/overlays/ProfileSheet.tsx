@@ -1,4 +1,3 @@
-// src/components/overlays/ProfileSheet.tsx
 "use client";
 import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 import { useUI } from "@/store/ui";

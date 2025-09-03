@@ -1,4 +1,3 @@
-// src/components/category/CategoryGrid.tsx
 import CategoryCard from "./CategoryCard";
 
 const items = [
