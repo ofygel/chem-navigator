@@ -126,7 +126,7 @@ export const CATALOG: Category[] = [
   },
   { slug: "household", title: "Бытовая химия", desc: "Очистка, дезинфекция, уход.", products: [] },
   { slug: "controlled", title: "Подконтрольные вещества", desc: "GHS/ADR, ограниченный оборот.", products: [] },
-  { slug: "services", title: "Услуги лаборатории", desc: "Аналитика, синтез, испытания.", products: [] },
+  { slug: "services", title: "Лабораторные оборудования и услуги", desc: "Аналитика, синтез, испытания.", products: [] },
 ]
 
 // утилиты поиска по данным

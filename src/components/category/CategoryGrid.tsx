@@ -6,7 +6,7 @@ const items = [
   { title: "Строительная химия",  desc: "Добавки, адгезивы, растворы для строительной индустрии.", slug: "construction", image: "/categories/construction.jpg" },
   { title: "Бытовая химия",       desc: "Очистка, дезинфекция, уход.",                       slug: "household",   image: "/categories/household.jpg" },
   { title: "Подконтрольные вещества", desc: "GHS/ADR, ограниченный оборот.",                 slug: "controlled",  image: "/categories/controlled.jpg" },
-  { title: "Услуги лаборатории",  desc: "Аналитика, синтез, испытания.",                     slug: "services",    image: "/categories/services.jpg" },
+  { title: "Лабораторные оборудования и услуги",  desc: "Аналитика, синтез, испытания.",                     slug: "services",    image: "/categories/services.jpg" },
 ];
 
 export default function CategoryGrid() {
