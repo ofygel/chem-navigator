@@ -25,14 +25,20 @@ export default function CartSheet() {
               <div className="text-sm font-medium">{c.title}</div>
               <div className="mt-1 text-xs text-white/70">Поставщик: {c.seller}</div>
               <div className="mt-2 flex items-center justify-between">
-                <div className="text-sm tabular-nums">{(c.price).toLocaleString("ru-RU")} {c.currency ?? "₽"}</div>
+                <div className="text-sm tabular-nums">
+                  {c.price.toLocaleString("ru-RU")} {c.currency ?? "₽"}
+                </div>
                 <div className="flex items-center gap-2">
                   <Input
-                    type="number" min={1} value={c.qty}
+                    type="number"
+                    min={1}
+                    value={c.qty}
                     className="h-8 w-16"
                     onChange={(e) => setQty(c.id, c.seller, Math.max(1, Number(e.target.value)))}
                   />
-                  <Button variant="ghost" onClick={() => removeFromCart(c.id, c.seller)}>Удалить</Button>
+                  <Button variant="ghost" onClick={() => removeFromCart(c.id, c.seller)}>
+                    Удалить
+                  </Button>
                 </div>
               </div>
             </div>
@@ -48,7 +54,9 @@ export default function CartSheet() {
                 <Button className="flex-1 rounded-xl bg-brand.cyan/20 text-brand.cyan hover:bg-brand.cyan/30">
                   Оформить
                 </Button>
-                <Button variant="ghost" onClick={clearCart}>Очистить</Button>
+                <Button variant="ghost" onClick={clearCart}>
+                  Очистить
+                </Button>
               </div>
             </>
           )}

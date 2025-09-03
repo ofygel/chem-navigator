@@ -1,7 +1,12 @@
 // src/components/overlays/ProductDialog.tsx
 "use client";
 import Image from "next/image";
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
+import {
+  Dialog,
+  DialogContent,
+  DialogTitle,
+  DialogDescription,
+} from "@/components/ui/dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useUI } from "@/store/ui";
@@ -9,19 +14,20 @@ import { findProduct } from "@/data/catalog";
 import GhsIcon from "@/components/catalog/GhsIcon";
 
 export default function ProductDialog() {
-  const {
-    productOpen,
-    selectedProductId,
-    closeProduct,
-    openModal,
-    addToCart,
-  } = useUI();
-
+  const { productOpen, selectedProductId, closeProduct, openModal, addToCart } = useUI();
   const product = selectedProductId ? findProduct(selectedProductId) : undefined;
 
   return (
     <Dialog open={productOpen} onOpenChange={(o) => (!o ? closeProduct() : null)}>
       <DialogContent className="max-w-3xl border-white/10 bg-black/60 p-0 backdrop-blur">
+        {/* a11y: скрытые заголовок и описание для DialogContent */}
+        <DialogTitle className="sr-only">
+          {product?.title ?? "Карточка товара"}
+        </DialogTitle>
+        <DialogDescription className="sr-only">
+          Детальная информация о товаре и предложения поставщиков.
+        </DialogDescription>
+
         {/* верхний блок — фон/герой */}
         <div className="relative overflow-hidden rounded-t-xl bg-gradient-to-br from-brand.blue/20 via-transparent to-transparent p-6">
           <div className="mx-auto grid grid-cols-1 items-center gap-4 md:grid-cols-[220px_1fr]">
@@ -41,6 +47,7 @@ export default function ProductDialog() {
                 {product?.title ?? "Товар"}
               </h2>
               {product?.cas && <div className="mt-1 text-white/70">CAS {product.cas}</div>}
+
               <div className="mt-3 flex flex-wrap items-center justify-center gap-2 md:justify-start">
                 {product?.purity != null && <Badge variant="outline">{product.purity} %</Badge>}
                 {product?.volume && (
