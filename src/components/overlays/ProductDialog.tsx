@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { useUI } from "@/store/ui";
 import { findProduct } from "@/data/catalog";
+import GhsIcon from "@/components/catalog/GhsIcon";
 
 export default function ProductDialog() {
   const {
@@ -62,15 +63,8 @@ export default function ProductDialog() {
                       key={h}
                       className="inline-flex items-center gap-2 rounded-md border border-white/15 bg-black/30 px-2 py-1 text-xs"
                     >
-                      {/* сюда позже подложим svg /ghs/*.svg */}
-                      <span className="h-3 w-3 rounded-sm bg-red-500/80" />
-                      {h === "flammable"
-                        ? "Огнеопасно"
-                        : h === "toxic"
-                        ? "Токсично"
-                        : h === "irritant"
-                        ? "Раздражает"
-                        : "Опасно для среды"}
+                      <GhsIcon code={h as any} />
+                      <span className="capitalize">{h}</span>
                     </span>
                   ))}
                 </div>

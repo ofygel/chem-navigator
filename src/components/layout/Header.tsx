@@ -1,101 +1,74 @@
-// src/components/overlays/CategoryOverlay.tsx
+// src/components/layout/Header.tsx
 "use client";
-import { useIsMobile } from "@/hooks/useIsMobile";
+
+import Link from "next/link";
+import { ShoppingCart, User, Mail } from "lucide-react";
 import { useUI } from "@/store/ui";
-import { findCategory } from "@/data/catalog";
-import ProductTile from "@/components/catalog/ProductTile";
-import { Tabs, TabsList, TabsTrigger, TabsContent } from "@/components/ui/tabs";
-import { ScrollArea } from "@/components/ui/scroll-area";
-import {
-  Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription
-} from "@/components/ui/dialog";
-import {
-  Sheet, SheetContent, SheetHeader, SheetTitle, SheetDescription
-} from "@/components/ui/sheet";
+import { cn } from "@/lib/utils";
 
-function CategoryBody() {
-  const { selectedCategory } = useUI();
-  const category = selectedCategory ? findCategory(selectedCategory as any) : undefined;
+export default function Header() {
+  const { openModal, locale, setLocale } = useUI();
 
   return (
-    <>
-      <Tabs defaultValue="popular" className="mt-4">
-        <TabsList>
-          <TabsTrigger value="popular">Популярное</TabsTrigger>
-          <TabsTrigger value="all">Все товары</TabsTrigger>
-          <TabsTrigger value="filters">Фильтры</TabsTrigger>
-        </TabsList>
+    <header className="sticky top-0 z-40 border-b border-white/10 bg-black/40 backdrop-blur">
+      <div className="mx-auto flex h-14 w-full max-w-7xl items-center justify-between px-4">
+        {/* Лого */}
+        <Link href="/" className="group inline-flex items-center gap-2">
+          <span className="inline-block h-3 w-3 rounded-full bg-brand.cyan/80 shadow-[0_0_16px_rgba(6,231,231,0.45)]" />
+          <span className="text-sm font-semibold tracking-wide text-white/90 group-hover:text-white">
+            Chem-Navigator
+          </span>
+        </Link>
 
-        <TabsContent value="popular" className="mt-4">
-          <ScrollArea className="h-[52vh]">
-            <div className="grid grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-4">
-              {category?.products.slice(0, 8).map((p) => (
-                <ProductTile key={p.id} id={p.id} title={p.title} image={p.image} purity={p.purity} volume={p.volume} />
-              ))}
-              {(!category || category.products.length === 0) && (
-                <div className="rounded-2xl border border-white/10 bg-black/30 p-6 text-sm text-white/80">
-                  Пока нет товаров. Скоро добавим.
-                </div>
+        {/* Действия */}
+        <div className="flex items-center gap-2">
+          {/* RU/KZ */}
+          <div className="flex overflow-hidden rounded-xl border border-white/15">
+            <button
+              onClick={() => setLocale("ru")}
+              className={cn(
+                "px-3 py-1.5 text-xs",
+                locale === "ru" ? "bg-brand.cyan/20 text-brand.cyan" : "text-white/70 hover:bg-white/5"
               )}
-            </div>
-          </ScrollArea>
-        </TabsContent>
-
-        <TabsContent value="all" className="mt-4">
-          <ScrollArea className="h-[52vh]">
-            <div className="grid auto-rows-fr grid-cols-2 gap-3 md:grid-cols-3 lg:grid-cols-5">
-              {category?.products.map((p) => (
-                <ProductTile key={p.id} id={p.id} title={p.title} image={p.image} purity={p.purity} volume={p.volume} />
-              ))}
-              {(!category || category.products.length === 0) && (
-                <div className="rounded-2xl border border-white/10 bg-black/30 p-6 text-sm text-white/80">
-                  Нет позиций в этой категории.
-                </div>
+            >
+              RU
+            </button>
+            <button
+              onClick={() => setLocale("kk")}
+              className={cn(
+                "px-3 py-1.5 text-xs",
+                locale === "kk" ? "bg-brand.cyan/20 text-brand.cyan" : "text-white/70 hover:bg-white/5"
               )}
-            </div>
-          </ScrollArea>
-        </TabsContent>
-
-        <TabsContent value="filters" className="mt-4">
-          <div className="grid gap-3 sm:grid-cols-2">
-            <div className="rounded-xl border border-white/10 bg-black/30 p-4">Чистота / ГОСТ / ТУ</div>
-            <div className="rounded-xl border border-white/10 bg-black/30 p-4">Фасовка / Поставщик</div>
+            >
+              KZ
+            </button>
           </div>
-        </TabsContent>
-      </Tabs>
-    </>
-  );
-}
 
-export default function CategoryOverlay() {
-  const { activeModal, closeModal, selectedCategory } = useUI();
-  const isMobile = useIsMobile();
-  const open = activeModal === "category";
-  const cat = selectedCategory ? findCategory(selectedCategory as any) : undefined;
+          <button
+            onClick={() => openModal("contacts")}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-black/40 text-white/80 hover:bg-white/5"
+            aria-label="Контакты"
+          >
+            <Mail className="h-4 w-4" />
+          </button>
 
-  if (isMobile) {
-    return (
-      <Sheet open={open} onOpenChange={(o) => (!o ? closeModal() : null)}>
-        <SheetContent side="bottom" className="h-[80vh]">
-          <SheetHeader className="text-left">
-            <SheetTitle>{cat?.title ?? "Категория"}</SheetTitle>
-            <SheetDescription>{cat?.desc}</SheetDescription>
-          </SheetHeader>
-          <CategoryBody />
-        </SheetContent>
-      </Sheet>
-    );
-  }
+          <button
+            onClick={() => openModal("profile")}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-black/40 text-white/80 hover:bg-white/5"
+            aria-label="Профиль"
+          >
+            <User className="h-4 w-4" />
+          </button>
 
-  return (
-    <Dialog open={open} onOpenChange={(o) => (!o ? closeModal() : null)}>
-      <DialogContent className="max-w-5xl border-white/10 bg-black/60 backdrop-blur">
-        <DialogHeader className="text-left">
-          <DialogTitle>{cat?.title ?? "Категория"}</DialogTitle>
-          <DialogDescription>{cat?.desc}</DialogDescription>
-        </DialogHeader>
-        <CategoryBody />
-      </DialogContent>
-    </Dialog>
+          <button
+            onClick={() => openModal("cart")}
+            className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-brand.cyan/30 bg-brand.cyan/15 text-brand.cyan hover:bg-brand.cyan/25"
+            aria-label="Корзина"
+          >
+            <ShoppingCart className="h-4 w-4" />
+          </button>
+        </div>
+      </div>
+    </header>
   );
 }

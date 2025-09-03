@@ -2,12 +2,12 @@
 import CategoryCard from "./CategoryCard";
 
 const items = [
-  { title: "Лабораторная химия", desc: "Реактивы, буферы, индикаторы.", slug: "lab", image: "/categories/lab.jpg" },
-  { title: "Промышленная химия", desc: "Растворители, смазки, ингибиторы.", slug: "industrial", image: "/categories/industrial.jpg" },
-  { title: "Строительная химия", desc: "Добавки, адгезивы, растворы.", slug: "construction", image: "/categories/construction.jpg" },
-  { title: "Бытовая химия", desc: "Очистка, дезинфекция, уход.", slug: "household", image: "/categories/household.jpg" },
-  { title: "Подконтрольные вещества", desc: "GHS/ADR, ограниченный оборот.", slug: "controlled", image: "/categories/controlled.jpg" },
-  { title: "Услуги лаборатории", desc: "Аналитика, синтез, испытания.", slug: "services", image: "/categories/services.jpg" },
+  { title: "Лабораторная химия", desc: "Реактивы, буферы, индикаторы.", slug: "lab",         image: "/categories/lab.jpg" },
+  { title: "Промышленная химия",  desc: "Растворители, смазки, ингибиторы коррозии.",        slug: "industrial",  image: "/categories/industrial.jpg" },
+  { title: "Строительная химия",  desc: "Добавки, адгезивы, растворы для строительной индустрии.", slug: "construction", image: "/categories/construction.jpg" },
+  { title: "Бытовая химия",       desc: "Очистка, дезинфекция, уход.",                       slug: "household",   image: "/categories/household.jpg" },
+  { title: "Подконтрольные вещества", desc: "GHS/ADR, ограниченный оборот.",                 slug: "controlled",  image: "/categories/controlled.jpg" },
+  { title: "Услуги лаборатории",  desc: "Аналитика, синтез, испытания.",                     slug: "services",    image: "/categories/services.jpg" },
 ];
 
 export default function CategoryGrid() {

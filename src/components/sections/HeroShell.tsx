@@ -6,17 +6,23 @@ import TronTitle from "@/components/hero/TronTitle";
 import SearchBar from "@/components/common/SearchBar";
 import CategoryGrid from "@/components/category/CategoryGrid";
 import { useT } from "@/lib/i18n";
+import { useIsMobile } from "@/hooks/useIsMobile";
+import { useUI } from "@/store/ui";
 
 const HologramMolecule = dynamic(() => import("@/components/three/HologramMolecule"), { ssr: false });
 
 export default function HeroShell() {
   const t = useT();
+  const isMobile = useIsMobile();
+  const qualityMode = useUI((s) => s.qualityMode);
+
+  const show3D = !isMobile && qualityMode !== "low";
 
   return (
     <section className="relative">
       {/* фон с 3D */}
       <div className="absolute inset-0 -z-10">
-        <HologramMolecule />
+        {show3D && <HologramMolecule />}
         <div className="pointer-events-none absolute inset-0 bg-grid-faint bg-grid-16 opacity-[0.08]"></div>
         <div className="pointer-events-none absolute inset-0 bg-[radial-gradient(ellipse_at_center,transparent_40%,rgba(0,0,0,0.55)_85%)]" />
       </div>
