@@ -25,8 +25,8 @@ body {
 /* Токены в стиле shadcn; background/foreground связаны с --bg/--fg */
 @layer base {
   :root {
-    --background: var(--bg);
-    --foreground: var(--fg);
+    --background: 0 0% 100%;
+    --foreground: 222.2 84% 4.9%;
 
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
@@ -57,8 +57,8 @@ body {
 
   .dark {
     /* Можешь оставить те же, либо задать более тёмные */
-    --background: #0d0f1a;
-    --foreground: #e7e7ea;
+    --background: 222.2 84% 4.9%;
+    --foreground: 210 40% 98%;
 
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
