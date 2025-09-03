@@ -1,3 +1,4 @@
+// src/store/ui.ts
 "use client";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
@@ -41,6 +42,11 @@ type UIState = {
   removeFromCart: (id: string, seller: string) => void;
   setQty: (id: string, seller: string, qty: number) => void;
   clearCart: () => void;
+
+  // --- Экшен/реакция (импульс нагрева) ---
+  reaction: number;            // 0..~3 — «температура»
+  addHeat: (x: number) => void; // добавить импульс тепла
+  cool: (dt: number) => void;   // естественное остывание
 };
 
 export const useUI = create<UIState>()(
@@ -78,13 +84,23 @@ export const useUI = create<UIState>()(
           set({ cart: [...cur, { ...item, qty }] });
         }
       },
-      removeFromCart: (id, seller) => set({ cart: get().cart.filter(c => !(c.id === id && c.seller === seller)) }),
+      removeFromCart: (id, seller) =>
+        set({ cart: get().cart.filter(c => !(c.id === id && c.seller === seller)) }),
       setQty: (id, seller, qty) => {
         const copy = get().cart.map(c => (c.id === id && c.seller === seller ? { ...c, qty } : c));
         set({ cart: copy });
       },
       clearCart: () => set({ cart: [] }),
+
+      // --- Реакция (импульс нагрева) ---
+      reaction: 0,
+      addHeat: (x) => set((s) => ({ reaction: Math.min(3, s.reaction + x) })),
+      cool: (dt) => set((s) => ({ reaction: Math.max(0, s.reaction - dt) })),
     }),
-    { name: "chem-ui-v4", partialize: (s) => ({ qualityMode: s.qualityMode, locale: s.locale, cart: s.cart }) }
+    {
+      name: "chem-ui-v4",
+      // reaction/hover/модалки не сохраняем — это эфемерное состояние
+      partialize: (s) => ({ qualityMode: s.qualityMode, locale: s.locale, cart: s.cart }),
+    }
   )
 );
