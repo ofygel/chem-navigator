@@ -1,10 +1,19 @@
 // src/lib/i18n.ts
+"use client";
 import { useUI } from "@/store/ui";
+
 const dict = {
-  ru: { searchPlaceholder: "Поиск по названию, CAS, назначению…", popular: "Популярные разделы" },
-  kk: { searchPlaceholder: "Атауы, CAS, тағайындауы бойынша іздеу…", popular: "Танымал бөлімдер" },
+  ru: {
+    popular: "Популярные разделы",
+    searchPlaceholder: "Поиск по названию, CAS, назначению…",
+  },
+  kk: {
+    popular: "Танымал бөлімдер",
+    searchPlaceholder: "Атауы, CAS немесе мақсаты бойынша іздеу…",
+  },
 } as const;
+
 export function useT() {
-  const locale = useUI(s => s.locale);
-  return (k: keyof typeof dict["ru"]) => (dict[locale] ?? dict.ru)[k];
+  const { locale } = useUI();
+  return (k: keyof typeof dict["ru"]) => (dict as any)[locale]?.[k] ?? (dict as any)["ru"][k];
 }
