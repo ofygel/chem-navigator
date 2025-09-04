@@ -1,3 +1,4 @@
+// src/components/layout/Header.tsx
 "use client";
 
 import Link from "next/link";
@@ -6,7 +7,8 @@ import { useUI } from "@/store/ui";
 import { cn } from "@/lib/utils";
 
 export default function Header() {
-  const { openModal, locale, setLocale } = useUI();
+  const ui = useUI() as any; // совместимость со старыми алиасами
+  const { locale, setLocale } = ui;
 
   return (
     <header className="sticky top-0 z-40 border-b border-white/10 bg-black/40 backdrop-blur">
@@ -41,23 +43,26 @@ export default function Header() {
           </div>
 
           <button
-            onClick={() => openModal("contacts")}
+            onClick={() => ui.openModal?.("contacts")}
             className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-black/40 text-white/80 hover:bg-white/5"
             aria-label="Контакты"
           >
             <Mail className="h-4 w-4" />
           </button>
 
+          {/* Профиль — открывает хаб, с резервом на setActiveModal */}
           <button
-            onClick={() => openModal("profile")}
-            className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-white/10 bg-black/40 text-white/80 hover:bg-white/5"
+            onClick={() =>
+              (ui.openModal ? ui.openModal("profile") : ui.setActiveModal?.("profile"))
+            }
+            className="rounded-xl bg-white/5 p-2 ring-1 ring-white/10 hover:bg-white/8"
             aria-label="Профиль"
           >
-            <User className="h-4 w-4" />
+            <User className="h-5 w-5 text-white/80" />
           </button>
 
           <button
-            onClick={() => openModal("cart")}
+            onClick={() => ui.openModal?.("cart")}
             className="inline-flex h-9 w-9 items-center justify-center rounded-xl border border-brand.cyan/30 bg-brand.cyan/15 text-brand.cyan hover:bg-brand.cyan/25"
             aria-label="Корзина"
           >

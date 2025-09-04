@@ -4,9 +4,19 @@ import { Sheet, SheetContent, SheetHeader, SheetTitle } from "@/components/ui/sh
 import { useUI } from "@/store/ui";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
+import BackButton from "@/components/common/BackButton";
 
 export default function CartSheet() {
-  const { activeModal, closeModal, cart, setQty, removeFromCart, clearCart } = useUI();
+  const {
+    activeModal,
+    closeModal,
+    cart,
+    setQty,
+    removeFromCart,
+    clearCart,
+    openModal,
+  } = useUI();
+
   const open = activeModal === "cart";
   const total = cart.reduce((s, c) => s + c.price * c.qty, 0);
 
@@ -14,7 +24,10 @@ export default function CartSheet() {
     <Sheet open={open} onOpenChange={(o) => (!o ? closeModal() : null)}>
       <SheetContent side="right" className="w-[420px] sm:w-[500px]">
         <SheetHeader>
-          <SheetTitle>Корзина</SheetTitle>
+          <div className="flex items-center gap-2">
+            <BackButton onClick={() => closeModal()} />
+            <SheetTitle>Корзина</SheetTitle>
+          </div>
         </SheetHeader>
 
         <div className="mt-4 space-y-3">
@@ -48,10 +61,15 @@ export default function CartSheet() {
             <>
               <div className="flex items-center justify-between border-t border-white/10 pt-3">
                 <div className="text-sm text-white/90">Итого</div>
-                <div className="text-base tabular-nums font-medium">{total.toLocaleString("ru-RU")} ₽</div>
+                <div className="text-base tabular-nums font-medium">
+                  {total.toLocaleString("ru-RU")} {cart[0]?.currency ?? "₽"}
+                </div>
               </div>
               <div className="flex gap-2">
-                <Button className="flex-1 rounded-xl bg-brand.cyan/20 text-brand.cyan hover:bg-brand.cyan/30">
+                <Button
+                  className="flex-1 rounded-xl bg-cyan-400/20 text-cyan-200 hover:bg-cyan-400/30"
+                  onClick={() => openModal("checkout")}
+                >
                   Оформить
                 </Button>
                 <Button variant="ghost" onClick={clearCart}>

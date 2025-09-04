@@ -8,6 +8,11 @@ import ProfileSheet from "@/components/overlays/ProfileSheet";
 import CartSheet from "@/components/overlays/CartSheet";
 import CategoryOverlay from "@/components/overlays/CategoryOverlay";
 import GlobalMolecularField from "@/components/three/GlobalMolecularField";
+import CheckoutDialog from "@/components/overlays/CheckoutDialog";
+import ProfileHub from "@/components/profile/ProfileHub";
+import BuyerProfile from "@/components/profile/BuyerProfile";
+import SellerDashboard from "@/components/profile/SellerDashboard";
+import AdminPanel from "@/components/profile/AdminPanel";
 
 export const metadata: Metadata = {
   title: "Chem-Navigator",
@@ -33,6 +38,11 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           <ProfileSheet />
           <CartSheet />
           <CategoryOverlay />
+          <CheckoutDialog />
+          <ProfileHub />
+          <BuyerProfile />
+          <SellerDashboard />
+          <AdminPanel />
         </div>
       </body>
     </html>

@@ -4,7 +4,16 @@ import { create } from "zustand";
 import { persist } from "zustand/middleware";
 
 type Quality = "high" | "low";
-type ModalType = null | "cart" | "profile" | "contacts" | "category";
+type ModalType =
+  | null
+  | "cart"
+  | "profile"
+  | "contacts"
+  | "category"
+  | "checkout"
+  | "buyerProfile"
+  | "sellerDashboard"
+  | "adminPanel";
 
 export type CartItem = {
   id: string;        // productId
@@ -24,6 +33,7 @@ type UIState = {
 
   activeModal: ModalType;
   openModal: (t: ModalType) => void;
+  setActiveModal: (t: ModalType) => void; // alias для совместимости
   closeModal: () => void;
 
   selectedCategory: string | null;
@@ -44,7 +54,7 @@ type UIState = {
   clearCart: () => void;
 
   // --- Экшен/реакция (импульс нагрева) ---
-  reaction: number;            // 0..~3 — «температура»
+  reaction: number;             // 0..~3 — «температура»
   addHeat: (x: number) => void; // добавить импульс тепла
   cool: (dt: number) => void;   // естественное остывание
 };
@@ -60,6 +70,7 @@ export const useUI = create<UIState>()(
 
       activeModal: null,
       openModal: (t) => set({ activeModal: t }),
+      setActiveModal: (t) => set({ activeModal: t }), // алиас, чтобы старые вызовы работали
       closeModal: () => set({ activeModal: null, selectedCategory: null }),
 
       selectedCategory: null,
@@ -76,18 +87,19 @@ export const useUI = create<UIState>()(
       cart: [],
       addToCart: (item, qty = 1) => {
         const cur = get().cart;
-        const idx = cur.findIndex(c => c.id === item.id && c.seller === item.seller);
+        const idx = cur.findIndex((c) => c.id === item.id && c.seller === item.seller);
         if (idx >= 0) {
-          const copy = [...cur]; copy[idx] = { ...copy[idx], qty: copy[idx].qty + qty };
+          const copy = [...cur];
+          copy[idx] = { ...copy[idx], qty: copy[idx].qty + qty };
           set({ cart: copy });
         } else {
           set({ cart: [...cur, { ...item, qty }] });
         }
       },
       removeFromCart: (id, seller) =>
-        set({ cart: get().cart.filter(c => !(c.id === id && c.seller === seller)) }),
+        set({ cart: get().cart.filter((c) => !(c.id === id && c.seller === seller)) }),
       setQty: (id, seller, qty) => {
-        const copy = get().cart.map(c => (c.id === id && c.seller === seller ? { ...c, qty } : c));
+        const copy = get().cart.map((c) => (c.id === id && c.seller === seller ? { ...c, qty } : c));
         set({ cart: copy });
       },
       clearCart: () => set({ cart: [] }),

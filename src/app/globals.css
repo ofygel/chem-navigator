@@ -20,6 +20,7 @@ body {
   background: var(--bg);
   color: var(--fg);
   font-family: var(--font-sans), Arial, Helvetica, sans-serif;
+  scroll-behavior: smooth; /* ← добавлено для гладких скроллов */
 }
 
 /* Токены в стиле shadcn; background/foreground связаны с --bg/--fg */
